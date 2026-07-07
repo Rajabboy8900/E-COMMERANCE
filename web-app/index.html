@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="uz">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>E-Commerce - Premium Vanilla UI</title>
+    <link rel="stylesheet" href="/src/style.css">
+  </head>
+  <body>
+    <!-- App Container -->
+    <div class="container">
+      <!-- Header -->
+      <header class="header">
+        <div class="logo">
+          <h1>E-Commerce Store</h1>
+          <p>Vanilla TS & GraphQL</p>
+        </div>
+        <div class="user-auth">
+          <select id="userSelect">
+            <option value="">-- Profil tanlang --</option>
+          </select>
+          <button id="btnNewUser" class="btn-primary">Yangi Profil</button>
+        </div>
+      </header>
+
+      <!-- Cart Button -->
+      <div id="floatingCart" class="floating-cart">
+        🛒 Savat (<span id="cartCount">0</span>)
+      </div>
+
+      <!-- Add Product -->
+      <div class="actions-bar">
+        <button id="btnNewProduct" class="btn-primary">+ Yangi Mahsulot</button>
+      </div>
+
+      <!-- Products Grid -->
+      <div id="productGrid" class="product-grid">
+        <!-- Products will be rendered here via TS -->
+      </div>
+    </div>
+
+    <!-- Modals Container -->
+    <div id="modalOverlay" class="modal-overlay hidden">
+      
+      <!-- New User Modal -->
+      <div id="userModal" class="modal hidden">
+        <h2>Ro'yxatdan O'tish</h2>
+        <form id="userForm">
+          <div class="input-group">
+            <label>Ism</label>
+            <input type="text" id="userName" required>
+          </div>
+          <div class="input-group">
+            <label>Email</label>
+            <input type="email" id="userEmail" required>
+          </div>
+          <div class="input-group">
+            <label>Parol</label>
+            <input type="password" id="userPassword" required>
+          </div>
+          <div class="modal-actions">
+            <button type="button" class="btn-secondary close-modal">Bekor qilish</button>
+            <button type="submit" class="btn-primary">Saqlash</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- New Product Modal -->
+      <div id="productModal" class="modal hidden">
+        <h2>Yangi Mahsulot</h2>
+        <form id="productForm">
+          <div class="input-group">
+            <label>Nomi</label>
+            <input type="text" id="productTitle" required>
+          </div>
+          <div class="input-group">
+            <label>Narxi ($)</label>
+            <input type="number" step="0.01" id="productPrice" required>
+          </div>
+          <div class="input-group">
+            <label>Kategoriya</label>
+            <select id="productCategory" required>
+              <option value="">Tanlang...</option>
+            </select>
+          </div>
+          <div class="modal-actions">
+            <button type="button" class="btn-secondary close-modal">Bekor qilish</button>
+            <button type="submit" class="btn-primary">Qo'shish</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Review Modal -->
+      <div id="reviewModal" class="modal hidden">
+        <h2>Sharh Qoldirish</h2>
+        <form id="reviewForm">
+          <input type="hidden" id="reviewProductId">
+          <div class="input-group">
+            <label>Baho (1-5)</label>
+            <input type="number" min="1" max="5" id="reviewRating" required>
+          </div>
+          <div class="input-group">
+            <label>Izoh</label>
+            <input type="text" id="reviewComment" required>
+          </div>
+          <div class="modal-actions">
+            <button type="button" class="btn-secondary close-modal">Bekor qilish</button>
+            <button type="submit" class="btn-primary">Jo'natish</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Cart Modal -->
+      <div id="cartModal" class="modal cart-modal hidden">
+        <h2>Sizning Savatingiz</h2>
+        <div id="cartItemsContainer">
+          <!-- Cart Items go here -->
+        </div>
+        <div class="cart-total">
+          Jami: $<span id="cartTotalPrice">0.00</span>
+        </div>
+        <div class="modal-actions mt-2">
+          <button type="button" class="btn-secondary close-modal">Yopish</button>
+          <button type="button" id="btnPlaceOrder" class="btn-primary" style="display: none;">Xarid Qilish</button>
+        </div>
+      </div>
+
+    </div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

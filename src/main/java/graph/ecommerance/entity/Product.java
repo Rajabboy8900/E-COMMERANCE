@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -22,5 +24,9 @@ public class Product {
     Double price;
 
     @ManyToOne
+    @JoinColumn(name = "category_id")
     Category category;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    List<Review> reviews;
 }

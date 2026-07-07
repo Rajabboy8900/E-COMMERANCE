@@ -1,3 +1,33 @@
+type User {
+    id: ID!
+    fullName: String!
+    email: String!
+    orders: [Order]
+    reviews: [Review]
+}
+
+type Order {
+    id: ID!
+    status: String!
+    totalAmount: Float!
+    user: User
+    items: [OrderItem]
+}
+
+type OrderItem {
+    id: ID!
+    quantity: Int!
+    priceAtPurchase: Float!
+    product: Product
+}
+
+type Review {
+    id: ID!
+    comment: String!
+    rating: Int!
+    user: User
+}
+
 type Category {
     id: ID!
     name: String!
@@ -9,20 +39,61 @@ type Product {
     title: String!
     price: Float!
     category: Category
+    reviews: [Review]
+}
+
+input ProductRequest {
+    title: String!
+    price: Float!
+    categoryId: ID!
+}
+
+input UserRequest {
+    fullName: String!
+    email: String!
+    password: String!
+}
+
+input ReviewRequest {
+    comment: String!
+    rating: Int!
+    productId: ID!
+    userId: ID!
+}
+
+input OrderItemRequest {
+    productId: ID!
+    quantity: Int!
+}
+
+input OrderRequest {
+    userId: ID!
+    items: [OrderItemRequest]!
 }
 
 type Query {
     getAllCategories: [Category]
-    getAllProducts: [Product]
+    
+    getAllProducts(page: Int, size: Int): [Product]
     getProductById(id: ID!): Product
+    
+    getAllUsers: [User]
+    getUserById(id: ID!): User
+    
+    getAllOrders: [Order]
+    getOrderById(id: ID!): Order
 }
 
 type Mutation {
     createCategory(name: String!): Category
 
-    createProduct(title: String!, price: Float!, categoryId: ID!): Product
-
-    updateProduct(id: ID!, title: String!, price: Float!, categoryId: ID!): Product
-
+    createProduct(request: ProductRequest!): Product
+    updateProduct(id: ID!, request: ProductRequest!): Product
     deleteProduct(id: ID!): String
+    
+    registerUser(request: UserRequest!): User
+    
+    leaveReview(request: ReviewRequest!): Review
+    
+    placeOrder(request: OrderRequest!): Order
 }
