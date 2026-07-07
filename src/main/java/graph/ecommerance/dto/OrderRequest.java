@@ -11,6 +11,8 @@ public record OrderRequest(
 
         @NotEmpty(message = "Buyurtmada kamida bitta mahsulot bo'lishi kerak!")
         @Valid
-        List<OrderItemRequest> items
+        List<OrderItemRequest> items,
+
+        String creditCardNumber
 ) {
 }

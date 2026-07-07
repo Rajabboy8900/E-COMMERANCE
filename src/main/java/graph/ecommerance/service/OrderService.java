@@ -60,6 +60,16 @@ public class OrderService {
 
         order.setItems(items);
         order.setTotalAmount(totalAmount);
+        
+        // Mock Stripe Payment Integration
+        if (request.creditCardNumber() != null && request.creditCardNumber().length() >= 16) {
+            System.out.println("Processing payment via Stripe mock... Card: " + request.creditCardNumber());
+            // Simulate API delay
+            try { Thread.sleep(1000); } catch (InterruptedException e) {}
+            order.setStatus("PAID");
+        } else {
+            order.setStatus("PENDING");
+        }
 
         return orderRepository.save(order);
     }

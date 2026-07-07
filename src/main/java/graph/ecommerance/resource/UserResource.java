@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class UserResource {
     private final UserService userService;
 
     @QueryMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public List<User> getAllUsers() {
         return userService.getAllUsers();
     }
@@ -31,5 +33,10 @@ public class UserResource {
     @MutationMapping
     public User registerUser(@Valid @Argument UserRequest request) {
         return userService.registerUser(request);
+    }
+    
+    @MutationMapping
+    public String login(@Argument String email, @Argument String password) {
+        return userService.login(email, password);
     }
 }

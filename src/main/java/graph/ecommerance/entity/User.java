@@ -21,10 +21,15 @@ public class User {
     Long id;
 
     String fullName;
-    String email;
-    String password;
+    private String email;
 
-    @OneToMany(mappedBy = "user")
+    @Column(nullable = false)
+    private String password;
+
+    @Enumerated(EnumType.STRING)
+    private Role role = Role.USER;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     List<Order> orders;
 
     @OneToMany(mappedBy = "user")

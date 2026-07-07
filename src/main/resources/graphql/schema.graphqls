@@ -2,6 +2,7 @@ type User {
     id: ID!
     fullName: String!
     email: String!
+    role: String!
     orders: [Order]
     reviews: [Review]
 }
@@ -38,6 +39,7 @@ type Product {
     id: ID!
     title: String!
     price: Float!
+    imageUrl: String
     category: Category
     reviews: [Review]
 }
@@ -45,6 +47,7 @@ type Product {
 input ProductRequest {
     title: String!
     price: Float!
+    imageUrl: String
     categoryId: ID!
 }
 
@@ -69,18 +72,21 @@ input OrderItemRequest {
 input OrderRequest {
     userId: ID!
     items: [OrderItemRequest]!
+    creditCardNumber: String
 }
 
 type Query {
     getAllCategories: [Category]
-    
+    getCategoryById(id: ID!): Category
+
     getAllProducts(page: Int, size: Int): [Product]
+    searchProducts(title: String, categoryId: ID, minPrice: Float, maxPrice: Float, page: Int, size: Int): [Product]
     getProductById(id: ID!): Product
     
     getAllUsers: [User]
     getUserById(id: ID!): User
     
-    getAllOrders: [Order]
+    getAllOrders(page: Int, size: Int): [Order]
     getOrderById(id: ID!): Order
 }
 
@@ -92,6 +98,7 @@ type Mutation {
     deleteProduct(id: ID!): String
     
     registerUser(request: UserRequest!): User
+    login(email: String!, password: String!): String
     
     leaveReview(request: ReviewRequest!): Review
     

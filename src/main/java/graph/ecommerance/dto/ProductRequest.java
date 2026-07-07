@@ -1,18 +1,19 @@
 package graph.ecommerance.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 public record ProductRequest(
-        @NotBlank(message = "Mahsulot nomi bo'sh bo'lishi mumkin emas!")
+        @NotBlank(message = "Title is required")
         String title,
-        
-        @NotNull(message = "Narx kiritilishi shart!")
-        @Positive(message = "Narx manfiy yoki nol bo'lishi mumkin emas!")
+
+        @NotNull(message = "Price is required")
+        @Positive(message = "Price must be greater than zero")
         Double price,
+
+        @NotNull(message = "Category ID is required")
+        Long categoryId,
         
-        @NotNull(message = "Kategoriya ID kiritilishi shart!")
-        Long categoryId
-) {
-}
+        String imageUrl
+) {}

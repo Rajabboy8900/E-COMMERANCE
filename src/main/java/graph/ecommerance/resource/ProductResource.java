@@ -20,9 +20,18 @@ public class ProductResource {
 
     @QueryMapping
     public List<Product> getAllProducts(@Argument Integer page, @Argument Integer size) {
-        int pageNumber = page != null ? page : 0;
-        int pageSize = size != null ? size : 10;
-        return productService.getAllProducts(pageNumber, pageSize);
+        return productService.getAllProducts(page != null ? page : 0, size != null ? size : 20);
+    }
+    
+    @QueryMapping
+    public List<Product> searchProducts(
+            @Argument String title, 
+            @Argument Long categoryId, 
+            @Argument Double minPrice, 
+            @Argument Double maxPrice, 
+            @Argument Integer page, 
+            @Argument Integer size) {
+        return productService.searchProducts(title, categoryId, minPrice, maxPrice, page != null ? page : 0, size != null ? size : 20);
     }
 
     @QueryMapping
@@ -31,16 +40,19 @@ public class ProductResource {
     }
 
     @MutationMapping
+    @org.springframework.security.access.prepost.PreAuthorize("hasRole('ADMIN')")
     public Product createProduct(@Valid @Argument ProductRequest request) {
         return productService.createProduct(request);
     }
 
     @MutationMapping
+    @org.springframework.security.access.prepost.PreAuthorize("hasRole('ADMIN')")
     public Product updateProduct(@Argument Long id, @Valid @Argument ProductRequest request) {
         return productService.updateProduct(id, request);
     }
 
     @MutationMapping
+    @org.springframework.security.access.prepost.PreAuthorize("hasRole('ADMIN')")
     public String deleteProduct(@Argument Long id) {
         return productService.deleteProduct(id);
     }

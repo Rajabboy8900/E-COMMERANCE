@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>E-Commerce - Premium Vanilla UI</title>
+    <title>E-Commerce - Pro UI</title>
     <link rel="stylesheet" href="/src/style.css">
   </head>
   <body>
@@ -12,25 +12,36 @@
       <!-- Header -->
       <header class="header">
         <div class="logo">
-          <h1>E-Commerce Store</h1>
-          <p>Vanilla TS & GraphQL</p>
+          <h1>E-Commerce Store Pro</h1>
+          <p>Security, Search, Upload, Payments</p>
         </div>
         <div class="user-auth">
-          <select id="userSelect">
-            <option value="">-- Profil tanlang --</option>
-          </select>
-          <button id="btnNewUser" class="btn-primary">Yangi Profil</button>
+          <span id="userInfo" style="display:none; font-weight:bold; margin-right:1rem;"></span>
+          <button id="btnAdminDashboard" class="btn-primary" style="display:none; background: #ef4444;">Admin Panel</button>
+          <button id="btnLoginOpen" class="btn-secondary">Kirish</button>
+          <button id="btnNewUser" class="btn-primary">Ro'yxatdan O'tish</button>
+          <button id="btnLogout" class="btn-secondary" style="display:none;">Chiqish</button>
         </div>
       </header>
+
+      <!-- Search & Filters -->
+      <div class="search-bar">
+        <input type="text" id="searchTitle" placeholder="Mahsulot qidirish...">
+        <select id="searchCategory">
+          <option value="">Barcha Kategoriyalar</option>
+        </select>
+        <input type="number" id="searchMinPrice" placeholder="Min $">
+        <input type="number" id="searchMaxPrice" placeholder="Max $">
+      </div>
+
+      <!-- Add Product (Admin Only) -->
+      <div class="actions-bar" id="adminActions" style="display:none;">
+        <button id="btnNewProduct" class="btn-primary">+ Yangi Mahsulot</button>
+      </div>
 
       <!-- Cart Button -->
       <div id="floatingCart" class="floating-cart">
         🛒 Savat (<span id="cartCount">0</span>)
-      </div>
-
-      <!-- Add Product -->
-      <div class="actions-bar">
-        <button id="btnNewProduct" class="btn-primary">+ Yangi Mahsulot</button>
       </div>
 
       <!-- Products Grid -->
@@ -42,6 +53,25 @@
     <!-- Modals Container -->
     <div id="modalOverlay" class="modal-overlay hidden">
       
+      <!-- Login Modal -->
+      <div id="loginModal" class="modal hidden">
+        <h2>Tizimga Kirish</h2>
+        <form id="loginForm">
+          <div class="input-group">
+            <label>Email</label>
+            <input type="email" id="loginEmail" required>
+          </div>
+          <div class="input-group">
+            <label>Parol</label>
+            <input type="password" id="loginPassword" required>
+          </div>
+          <div class="modal-actions">
+            <button type="button" class="btn-secondary close-modal">Bekor qilish</button>
+            <button type="submit" class="btn-primary">Kirish</button>
+          </div>
+        </form>
+      </div>
+
       <!-- New User Modal -->
       <div id="userModal" class="modal hidden">
         <h2>Ro'yxatdan O'tish</h2>
@@ -67,7 +97,7 @@
 
       <!-- New Product Modal -->
       <div id="productModal" class="modal hidden">
-        <h2>Yangi Mahsulot</h2>
+        <h2>Yangi Mahsulot (Admin)</h2>
         <form id="productForm">
           <div class="input-group">
             <label>Nomi</label>
@@ -79,9 +109,11 @@
           </div>
           <div class="input-group">
             <label>Kategoriya</label>
-            <select id="productCategory" required>
-              <option value="">Tanlang...</option>
-            </select>
+            <select id="productCategory" required></select>
+          </div>
+          <div class="input-group">
+            <label>Rasm yuklash</label>
+            <input type="file" id="productImage" accept="image/*">
           </div>
           <div class="modal-actions">
             <button type="button" class="btn-secondary close-modal">Bekor qilish</button>
@@ -113,11 +145,14 @@
       <!-- Cart Modal -->
       <div id="cartModal" class="modal cart-modal hidden">
         <h2>Sizning Savatingiz</h2>
-        <div id="cartItemsContainer">
-          <!-- Cart Items go here -->
-        </div>
+        <div id="cartItemsContainer"></div>
         <div class="cart-total">
           Jami: $<span id="cartTotalPrice">0.00</span>
+        </div>
+        <hr style="margin: 1rem 0; border-color: rgba(255,255,255,0.1);">
+        <div class="input-group" id="paymentSection" style="display:none;">
+          <label>Karta Raqami (Stripe Mock)</label>
+          <input type="text" id="creditCard" placeholder="1234 5678 1234 5678" maxlength="16">
         </div>
         <div class="modal-actions mt-2">
           <button type="button" class="btn-secondary close-modal">Yopish</button>

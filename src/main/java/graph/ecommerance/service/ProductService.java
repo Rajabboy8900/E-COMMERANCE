@@ -19,36 +19,39 @@ public class ProductService {
     private final CategoryRepository categoryRepository;
 
     public List<Product> getAllProducts(int page, int size) {
-        PageRequest pageRequest = PageRequest.of(page, size);
-        return productRepository.findAll(pageRequest).getContent();
+        return productRepository.findAll(PageRequest.of(page, size)).getContent();
+    }
+    
+    public List<Product> searchProducts(String title, Long categoryId, Double minPrice, Double maxPrice, int page, int size) {
+        String safeTitle = (title == null) ? "" : title;
+        return productRepository.searchProducts(safeTitle, categoryId, minPrice, maxPrice, PageRequest.of(page, size)).getContent();
     }
 
     public Product getProductById(Long id) {
-        return productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Bunday ID ga ega mahsulot topilmadi!"));
+        return productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
     }
 
     public Product createProduct(ProductRequest request) {
         Category category = categoryRepository.findById(request.categoryId())
-                .orElseThrow(() -> new RuntimeException("Kategoriya topilmadi!"));
+                .orElseThrow(() -> new RuntimeException("Category not found"));
 
         Product product = new Product();
         product.setTitle(request.title());
         product.setPrice(request.price());
+        product.setImageUrl(request.imageUrl());
         product.setCategory(category);
 
         return productRepository.save(product);
     }
 
     public Product updateProduct(Long id, ProductRequest request) {
-        Product product = productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("O'zgartirilishi kerak bo'lgan mahsulot topilmadi!"));
-        
+        Product product = getProductById(id);
         Category category = categoryRepository.findById(request.categoryId())
-                .orElseThrow(() -> new RuntimeException("Kategoriya topilmadi!"));
+                .orElseThrow(() -> new RuntimeException("Category not found"));
 
         product.setTitle(request.title());
         product.setPrice(request.price());
+        product.setImageUrl(request.imageUrl());
         product.setCategory(category);
 
         return productRepository.save(product);
@@ -56,6 +59,6 @@ public class ProductService {
 
     public String deleteProduct(Long id) {
         productRepository.deleteById(id);
-        return "Mahsulot muvaffaqiyatli o'chirildi!";
+        return "Product deleted successfully";
     }
 }
